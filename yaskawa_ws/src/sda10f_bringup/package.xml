@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>sda10f_bringup</name>
+  <version>0.0.1</version>
+  <description>Bringup (spawn + controllers) para el SDA10F, separado de scilab_world</description>
+  <maintainer email="jorge@example.com">jorge</maintainer>
+  <license>Apache-2.0</license>
+  <exec_depend>motoman_sda10f_support</exec_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>joint_trajectory_controller</exec_depend>
+  <exec_depend>joint_state_broadcaster</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+</package>

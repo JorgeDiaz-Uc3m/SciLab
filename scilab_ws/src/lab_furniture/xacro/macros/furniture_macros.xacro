@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<sdf version="1.9" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="caja_simple" params="model_name a b c color_r:=0.6 color_g:=0.6 color_b:=0.6">
+    <model name="${model_name}">
+      <static>true</static>
+      <link name="link">
+        <pose>0 0 ${c/2} 0 0 0</pose>
+        <visual name="visual">
+          <geometry><box><size>${a} ${b} ${c}</size></box></geometry>
+          <material>
+            <ambient>${color_r} ${color_g} ${color_b} 1</ambient>
+            <diffuse>${color_r} ${color_g} ${color_b} 1</diffuse>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry><box><size>${a} ${b} ${c}</size></box></geometry>
+        </collision>
+      </link>
+    </model>
+  </xacro:macro>
+
+  <xacro:macro name="mesa_pata" params="suffix x y c diametro_pata color_r color_g color_b">
+    <link name="pata_${suffix}">
+      <pose>${x} ${y} ${c/2} 0 0 0</pose>
+      <visual name="visual_pata_${suffix}">
+        <geometry><cylinder><radius>${diametro_pata/2}</radius><length>${c}</length></cylinder></geometry>
+        <material>
+          <ambient>${color_r} ${color_g} ${color_b} 1</ambient>
+          <diffuse>${color_r} ${color_g} ${color_b} 1</diffuse>
+        </material>
+      </visual>
+      <collision name="collision_pata_${suffix}">
+        <geometry><cylinder><radius>${diametro_pata/2}</radius><length>${c}</length></cylinder></geometry>
+      </collision>
+    </link>
+  </xacro:macro>
+
+   <xacro:macro name="mesa_patas" params="model_name a b c
+    grosor_tablero:=0.03 diametro_pata:=0.05 inset:=0.05
+    color_r:=0.6 color_g:=0.6 color_b:=0.6
+    color_pata_r:=0.15 color_pata_g:=0.15 color_pata_b:=0.15">
+    <model name="${model_name}">
+      <static>true</static>
+
+      <link name="tablero">
+        <pose>0 0 ${c + grosor_tablero/2} 0 0 0</pose>
+        <visual name="visual_tablero">
+          <geometry><box><size>${a} ${b} ${grosor_tablero}</size></box></geometry>
+          <material>
+            <ambient>${color_r} ${color_g} ${color_b} 1</ambient>
+            <diffuse>${color_r} ${color_g} ${color_b} 1</diffuse>
+          </material>
+        </visual>
+        <collision name="collision_tablero">
+          <geometry><box><size>${a} ${b} ${grosor_tablero}</size></box></geometry>
+        </collision>
+      </link>
+
+      <xacro:mesa_pata suffix="1" x="${a/2 - inset}"    y="${b/2 - inset}"    c="${c}" diametro_pata="${diametro_pata}" color_r="${color_pata_r}" color_g="${color_pata_g}" color_b="${color_pata_b}"/>
+      <xacro:mesa_pata suffix="2" x="${-(a/2 - inset)}" y="${b/2 - inset}"    c="${c}" diametro_pata="${diametro_pata}" color_r="${color_pata_r}" color_g="${color_pata_g}" color_b="${color_pata_b}"/>
+      <xacro:mesa_pata suffix="3" x="${a/2 - inset}"    y="${-(b/2 - inset)}" c="${c}" diametro_pata="${diametro_pata}" color_r="${color_pata_r}" color_g="${color_pata_g}" color_b="${color_pata_b}"/>
+      <xacro:mesa_pata suffix="4" x="${-(a/2 - inset)}" y="${-(b/2 - inset)}" c="${c}" diametro_pata="${diametro_pata}" color_r="${color_pata_r}" color_g="${color_pata_g}" color_b="${color_pata_b}"/>
+    </model>
+  </xacro:macro>
+
+</sdf>

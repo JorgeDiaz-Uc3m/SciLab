@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<sdf version="1.9" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find lab_furniture)/xacro/macros/furniture_macros.xacro"/>
+
+  <xacro:property name="a" value="1.25"/>  <!-- ancho (m) -->
+  <xacro:property name="b" value="0.45"/>  <!-- fondo  (m) -->
+  <xacro:property name="c" value="0.77"/>  <!-- altura (m) -->
+
+  <xacro:mesa_patas model_name="mesa_fondo" a="${a}" b="${b}" c="${c}"/>
+</sdf>
