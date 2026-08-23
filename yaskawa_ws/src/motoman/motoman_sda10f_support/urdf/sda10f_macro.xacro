@@ -1,0 +1,80 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find motoman_resources)/urdf/common_materials.xacro"/>
+  <xacro:include filename="$(find motoman_sda10f_support)/urdf/common_torso_macro.xacro" />
+  <xacro:include filename="$(find motoman_sda10f_support)/urdf/arm_macro.xacro" />
+
+  <xacro:macro name="motoman_sda10f" params="prefix">
+    <xacro:torso name="${prefix}torso" prefix="${prefix}torso_"/>
+
+    <xacro:motoman_arm name="${prefix}arm_left" prefix="${prefix}arm_left_" parent="${prefix}torso_link_b1" reflect="1">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:motoman_arm>
+
+    <xacro:motoman_arm name="${prefix}arm_right" prefix="${prefix}arm_right_" parent="${prefix}torso_link_b1" reflect="-1">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:motoman_arm>
+
+    <!-- link list -->
+    <link name="${prefix}world"/>
+
+    <joint name="${prefix}world_to_base" type="fixed">
+      <parent link="${prefix}world"/>
+      <child link="${prefix}base_link"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="${prefix}base_link">
+      <inertial>
+        <mass value="0.01"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
+      </inertial>
+    </link>
+
+    <!-- joint list -->
+    <joint name="${prefix}base_link_torso" type="fixed">
+      <parent link="${prefix}base_link"/>
+      <child link="${prefix}torso_base_link"/>
+      <origin xyz="0 0 1.2" rpy="0 0 0"/>
+    </joint>
+  <ros2_control name="${prefix}SDA10FSystem" type="system">
+  <hardware>
+    <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+  </hardware>
+  <joint name="${prefix}torso_joint_b1">
+    <command_interface name="position"/>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  <joint name="${prefix}torso_joint_b2">
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  <xacro:macro name="arm_ros2_control_joints" params="prefix">
+    <joint name="${prefix}joint_1_s"><command_interface name="position"/><state_interface name="position"/><state_interface name="velocity"/></joint>
+    <joint name="${prefix}joint_2_l"><command_interface name="position"/><state_interface name="position"/><state_interface name="velocity"/></joint>
+    <joint name="${prefix}joint_3_e"><command_interface name="position"/><state_interface name="position"/><state_interface name="velocity"/></joint>
+    <joint name="${prefix}joint_4_u"><command_interface name="position"/><state_interface name="position"/><state_interface name="velocity"/></joint>
+    <joint name="${prefix}joint_5_r"><command_interface name="position"/><state_interface name="position"/><state_interface name="velocity"/></joint>
+    <joint name="${prefix}joint_6_b"><command_interface name="position"/><state_interface name="position"/><state_interface name="velocity"/></joint>
+    <joint name="${prefix}joint_7_t"><command_interface name="position"/><state_interface name="position"/><state_interface name="velocity"/></joint>
+  </xacro:macro>
+  <xacro:arm_ros2_control_joints prefix="${prefix}arm_left_"/>
+  <xacro:arm_ros2_control_joints prefix="${prefix}arm_right_"/>
+</ros2_control>
+
+<gazebo>
+  <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+    <parameters>$(find sda10f_bringup)/config/sda10f_controllers.yaml</parameters>
+  </plugin>
+</gazebo>
+
+  </xacro:macro>
+
+  <!-- The following xacro is kept for backwards compatibility, it should not be used -->
+  <!-- see: https://github.com/ros-industrial/motoman/issues/166 -->
+  <xacro:macro name="sda10f">
+    <xacro:motoman_sda10f prefix=""/>
+  </xacro:macro>
+</robot>
