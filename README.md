@@ -34,3 +34,60 @@ El paquete **`yaskawa_ws/src/motoman`** corresponde al proyecto [ROS-Industrial]
 ## Nota de transparencia sobre el uso de IA
 
 Durante el desarrollo de este proyecto se ha utilizado asistencia de inteligencia artificial como herramienta de apoyo. La autoría intelectual, las decisiones de diseño y la responsabilidad sobre el contenido del TFG son del autor. El detalle completo del uso de IA en la elaboración de la memoria se encuentra en el Anexo correspondiente del documento entregable, conforme a la normativa de la UC3M.
+
+
+## Instalación y uso
+
+### Requisitos previos
+
+- Ubuntu 24.04 LTS
+- ROS2 Jazzy Jalisco
+- Gazebo Harmonic
+- Paquete `gz_ros2_control`
+
+### Instalación
+
+Clona el repositorio en tu equipo:
+
+```bash
+git clone https://github.com/JorgeDiaz-Uc3m/SciLab.git
+```
+
+Construye los dos workspaces por separado:
+
+```bash
+# Workspace SciLab
+cd ~/SciLab/scilab_ws
+colcon build --symlink-install
+
+# Workspace Yaskawa
+cd ~/SciLab/yaskawa_ws
+colcon build --symlink-install
+```
+
+### Uso
+
+El sistema se lanza en tres terminales en el siguiente orden:
+
+**Terminal 1 — Mundo base:**
+
+```bash
+source ~/SciLab/scilab_ws/install/setup.bash
+ros2 launch scilab_world lab_world.launch.py
+```
+
+**Terminal 2 — Mobiliario del laboratorio:**
+
+```bash
+source ~/SciLab/scilab_ws/install/setup.bash
+ros2 launch lab_furniture spawn_lab_furniture.launch.py
+```
+
+**Terminal 3 — Robot SDA10F:**
+
+```bash
+source ~/SciLab/yaskawa_ws/install/setup.bash
+ros2 launch sda10f_bringup spawn_sda10f.launch.py
+```
+
+Una vez lanzado el sistema completo, los controladores de los brazos y el torso (`left_arm`, `right_arm`, `torso`) pueden verificarse y comandarse mediante `rqt_joint_trajectory_controller`.
