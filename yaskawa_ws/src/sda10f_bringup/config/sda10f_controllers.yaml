@@ -18,7 +18,6 @@ torso_controller:
   ros__parameters:
     joints:
       - torso_joint_b1
-      - torso_joint_b2
     interface_name: position
     command_interfaces:
       - position

@@ -68,12 +68,12 @@ def generate_launch_description():
     ld.add_action(set_model_path)
 
     set_motoman_sda10f_path = AppendEnvironmentVariable(
-        name='GZ_SIM_RESOURCE_PATH',
-        value=get_package_share_directory('motoman_sda10f_support')
+         name='GZ_SIM_RESOURCE_PATH',
+         value=os.path.dirname(get_package_share_directory('motoman_sda10f_support'))
     )
     set_motoman_resources_path = AppendEnvironmentVariable(
-        name='GZ_SIM_RESOURCE_PATH',
-        value=get_package_share_directory('motoman_resources')
+         name='GZ_SIM_RESOURCE_PATH',
+         value=os.path.dirname(get_package_share_directory('motoman_resources'))
     )
 
     ld.add_action(set_motoman_sda10f_path)
